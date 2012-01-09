@@ -1,0 +1,8 @@
+application: thegeorgerogers42
+version: 3
+runtime: go
+api_version: 3
+
+handlers:
+- url:    /.*
+  script: _go_app

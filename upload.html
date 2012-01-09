@@ -1,0 +1,12 @@
+<!doctype html>
+<html>
+  <body>
+    <form action="/post/{{.Filename}}" method="POST" enctype="multipart/form-data">
+      Title: <input type="text" name="title" value={{.Filename}}><br>
+      <textarea rows="26" cols="80" name="content">{{.Content}}</textarea><br>
+      <input type="submit">
+    </form>
+    <a href="{{.Logout}}">Logout</a>
+  </body>
+</html>
+  

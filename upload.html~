@@ -1,0 +1,10 @@
+<!doctype html>
+<html>
+  <body>
+    <form action="{@}" method="POST" enctype="multipart/form-data">
+      <input type="file" name="file">
+      <input type="submit">
+    </form>
+  </body>
+</html>
+  
