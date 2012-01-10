@@ -101,4 +101,3 @@ func init() {
 	handle("/post/", upload)
 	http.HandleFunc("/", index)
 }
-// indent
