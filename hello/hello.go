@@ -3,6 +3,7 @@ package hello
 import (
 	"appengine"
 	"appengine/datastore"
+	"appengine/memcache"
 	"appengine/user"
 	"http"
 	"template"
@@ -31,7 +32,6 @@ func upload(prefix string) http.HandlerFunc {
 			if err != nil {
 				panic(err)
 			}
-
 			http.Redirect(w, r, l, 302)
 			return
 		}
@@ -48,7 +48,14 @@ func upload(prefix string) http.HandlerFunc {
 		}
 		content := r.FormValue("content")
 		output := html.EscapeString(content)
-		datastore.Put(c, k, &Page{output})
+		err := memcache.Set(c, &memcache.Item{Key: filename, Value: []byte(output)})
+		if err != nil {
+			panic(err)
+		}
+		_, err = datastore.Put(c, k, &Page{output})
+		if err != nil {
+			panic(err)
+		}
 		http.Redirect(w, r, "/view/"+filename, 302)
 	}
 }
@@ -59,7 +66,13 @@ func view(prefix string) http.HandlerFunc {
 		p := r.URL.Path[len(prefix):]
 		s := new(Page)
 		k := datastore.NewKey(c, "string", p, 0, nil)
-		datastore.Get(c, k, s)
+		if item, err := memcache.Get(c, p); err == memcache.ErrCacheMiss {
+			datastore.Get(c, k, s)
+		} else if err != nil {
+			panic(err)
+		} else {
+			s.Content = string(item.Value)
+		}
 		output := string(blackfriday.MarkdownCommon([]byte(s.Content)))
 		viewTemplate.Execute(w, foo{p, output, ""})
 	}
