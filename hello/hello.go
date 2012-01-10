@@ -68,6 +68,10 @@ func view(prefix string) http.HandlerFunc {
 		k := datastore.NewKey(c, "string", p, 0, nil)
 		if item, err := memcache.Get(c, p); err == memcache.ErrCacheMiss {
 			datastore.Get(c, k, s)
+			err = memcache.Set(c, &memcache.Item{Key: p, Value: []byte(s.Content)})
+			if err != nil {
+				panic(err)
+			}
 		} else if err != nil {
 			panic(err)
 		} else {
