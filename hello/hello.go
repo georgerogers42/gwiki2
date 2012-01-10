@@ -15,7 +15,7 @@ type Page struct {
 	Content string
 }
 
-type foo struct {
+type Foo struct {
 	Filename, Content string
 	Logout            string
 }
@@ -43,7 +43,7 @@ func upload(prefix string) http.HandlerFunc {
 			if err != nil {
 				panic(err)
 			}
-			uploadTemplate.Execute(w, foo{filename, s.Content, l})
+			uploadTemplate.Execute(w, Foo{filename, s.Content, l})
 			return
 		}
 		content := r.FormValue("content")
@@ -78,7 +78,7 @@ func view(prefix string) http.HandlerFunc {
 			s.Content = string(item.Value)
 		}
 		output := string(blackfriday.MarkdownCommon([]byte(s.Content)))
-		viewTemplate.Execute(w, foo{p, output, ""})
+		viewTemplate.Execute(w, Foo{p, output, ""})
 	}
 }
 
