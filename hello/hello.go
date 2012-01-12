@@ -107,7 +107,7 @@ func delete(prefix string) http.Handler {
 		if r.Method == "GET" {
 			s := new(Page)
 			datastore.Get(c, k, s)
-			l, err := user.LogoutURL(c, "/view/index")
+			l, err := user.LogoutURL(c, "/view/"+filename)
 			if err != nil {
 				panic(err)
 			}
