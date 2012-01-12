@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
-  <body>
-    <p>{{.Content}}</p><br>
-    <a href="/post/{{.Filename}}">Edit</a>
-  </body>
+	<body>
+		<p>{{.Content}}</p><br>
+		<a href="/post/{{html .Filename}}">Edit</a><br>
+		<a href="/delete/{{html .Filename}}">Delete</a>
+	</body>
 </html>
-
